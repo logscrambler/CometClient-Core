@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "comet-core",
+  "version": "${version}",
+  "name": "CometCore",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/comet-core/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.comet.core.client.CometClientClient"
+    ],
+    "main": [
+      "net.comet.core.CometClient"
+    ],
+    "comet_module": [
+      "net.comet.core.CometCoreModule"
+    ]
+  },
+  "mixins": [
+    "comet-core.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
