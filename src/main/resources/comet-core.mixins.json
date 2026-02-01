@@ -6,7 +6,7 @@
   "mixins": [],
   "client": [
     "ScreenMixin",
-    "ButtonTextMixin"
+    "InGameHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1
