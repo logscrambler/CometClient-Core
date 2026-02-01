@@ -1,6 +1,8 @@
 package net.comet.core.module;
 
 import net.comet.core.CometClient;
+import net.minecraft.client.gui.DrawContext;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,17 +54,16 @@ public class ModuleManager {
     }
 
     /**
-     * 등록된 모듈 중 {@link IHudModule} 인터페이스를 구현하는 모든 모듈의 리스트를 반환합니다.
+     * 게임 화면(HUD) 렌더링 시 호출됩니다.
+     * 활성화된 모든 모듈의 onRender 메서드를 호출하여 화면에 그립니다.
      *
-     * @return 등록된 모든 {@link IHudModule}의 리스트
+     * @param context 그리기 도구
      */
-    public List<IHudModule> getHudModules() {
-        List<IHudModule> hudModules = new ArrayList<>();
+    public void onRender(DrawContext context) {
         for (IModule module : modules) {
-            if (module instanceof IHudModule) {
-                hudModules.add((IHudModule) module);
+            if (module.isEnabled() && module instanceof Module) {
+                ((Module) module).onRender(context);
             }
         }
-        return Collections.unmodifiableList(hudModules);
     }
 }

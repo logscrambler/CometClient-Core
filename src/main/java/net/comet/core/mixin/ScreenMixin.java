@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  *
  * @author ReVersing
  */
-@Mixin(Screen.class)
+@Mixin(value = Screen.class, priority = 3000)
 public abstract class ScreenMixin {
 
     /**

@@ -1,5 +1,6 @@
 package net.comet.core;
 
+import net.comet.core.config.ConfigManager;
 import net.comet.core.module.ModuleManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -27,14 +28,20 @@ public class CometClient implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Comet Client Core가 깨어났습니다! (Initialized)");
 
+        // 1. 모듈 로드
         // Fabric 로더를 통해 'comet_module' 엔트리포인트를 구현한 모든 모듈을 찾습니다.
-        // 이는 다른 모드들이 Comet Client에 자신의 모듈을 등록할 수 있는 통로 역할을 합니다.
         FabricLoader.getInstance().getEntrypoints("comet_module", CometModule.class).forEach(entrypoint -> {
-            // 찾은 각 모듈 엔트리포인트에게 자신의 모듈들을 ModuleManager에 등록해달라고 요청합니다.
             entrypoint.registerModules(ModuleManager.getInstance()::register);
         });
 
-        // 몇 개의 모듈이 성공적으로 등록되었는지 로그로 남겨 확인합니다.
         LOGGER.info("총 {}개의 모듈이 Comet Client에 등록되었습니다.", ModuleManager.getInstance().getModules().size());
+        
+        // 2. 설정 로드
+        // 등록된 모듈들의 저장된 설정을 불러옵니다.
+        ConfigManager.load();
+        
+        // 3. 종료 시 저장 훅 등록
+        // 게임이 종료될 때 설정을 자동으로 저장합니다.
+        Runtime.getRuntime().addShutdownHook(new Thread(ConfigManager::save));
     }
 }

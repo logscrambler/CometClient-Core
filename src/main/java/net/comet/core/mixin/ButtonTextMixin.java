@@ -13,25 +13,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * 마인크래프트의 일반 텍스트 버튼(ButtonWidget.Text)에만 Comet 테마를 적용하기 위한 Mixin입니다.
- * 이 방법은 아이콘을 사용하는 특수 버튼(조합법 책 등)의 렌더링을 방해하지 않아 안전합니다.
+ * 마인크래프트의 버튼(ButtonWidget)에 Comet 테마를 적용하기 위한 Mixin입니다.
  *
  * @author ReVersing
  */
-@Mixin(ButtonWidget.Text.class)
-public abstract class ButtonTextMixin extends ButtonWidget {
+@Mixin(value = ButtonWidget.class, priority = 3000)
+public abstract class ButtonTextMixin extends net.minecraft.client.gui.widget.PressableWidget {
 
-    // Mixin 대상 클래스의 생성자와 일치하는 생성자가 필요합니다.
-    public ButtonTextMixin(int x, int y, int width, int height, net.minecraft.text.Text message, PressAction onPress, NarrationSupplier narrationSupplier) {
-        super(x, y, width, height, message, onPress, narrationSupplier);
+    public ButtonTextMixin(int x, int y, int width, int height, net.minecraft.text.Text message) {
+        super(x, y, width, height, message);
     }
 
     /**
-     * ButtonWidget.Text의 drawIcon 메서드에 코드를 주입합니다.
-     * 이 메서드는 텍스트 버튼의 실제 렌더링 로직을 포함하고 있습니다.
+     * ButtonWidget의 renderWidget 메서드에 코드를 주입합니다.
      */
-    @Inject(method = "drawIcon", at = @At("HEAD"), cancellable = true)
-    private void onDrawIcon(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(method = "renderWidget", at = @At("HEAD"), cancellable = true)
+    private void onRenderWidget(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         // 1. 원래의 버튼 렌더링 로직을 취소합니다.
         ci.cancel();
 
