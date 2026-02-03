@@ -66,4 +66,4 @@ public class MyModEntrypoint implements CometModule {
 ```
 
 ## 라이선스
-MIT License
+코드 수정은 가능하나 상업적 이용또는 공개등 어떠한 이익을 취하는 행위를금함
